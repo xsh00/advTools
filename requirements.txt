@@ -1,0 +1,25 @@
+# Web 框架和服务器
+fastapi>=0.68.0
+uvicorn>=0.15.0
+streamlit>=1.22.0
+
+# 视频下载工具
+yt-dlp>=2023.0.0
+
+# HTTP 请求
+requests>=2.28.0
+
+# API 文档
+pydantic>=1.10.0
+
+# CORS 支持
+python-multipart>=0.0.5
+
+# 类型提示支持
+typing-extensions>=4.0.0
+
+# 异步支持
+aiofiles>=0.8.0
+
+# 日期时间处理
+python-dateutil>=2.8.2 

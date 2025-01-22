@@ -61,15 +61,15 @@ def calculate_gradient_roi(gmv, roi, delta=0.1):
     return ((commission2 + bonus2) - (commission1 + bonus1)) / delta
 
 def plot_optimization_arrow(ax, pos_gmv, pos_roi, pos_z, direction, scale=2):
-    """绘制优化方向箭头"""
+    """Draw optimization direction arrow"""
     if direction[0] == 'GMV':
         color = 'black'
-        label = 'GMV优先'
+        label = 'GMV Priority'
     else:
         color = 'blue'
-        label = 'ROI优先'
+        label = 'ROI Priority'
     
-    # 计算箭头方向
+    # Calculate arrow direction
     arrow_length = scale
     if direction[0] == 'GMV':
         dx, dy = 0, arrow_length
@@ -84,12 +84,8 @@ def plot_optimization_arrow(ax, pos_gmv, pos_roi, pos_z, direction, scale=2):
     return label
 
 def create_3d_analysis(current_gmv=None, current_roi=None):
-    """创建交互式3D分析图"""
-    # 设置中文字体
-    plt.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文标签
-    plt.rcParams['axes.unicode_minus'] = False    # 用来正常显示负号
-    
-    # 创建ROI和GMV的数值范围
+    """Create interactive 3D analysis plot"""
+    # Create ROI and GMV value ranges
     roi_range = np.linspace(1.0, 3.5, 50)
     gmv_range = np.linspace(0.5, 60, 50)
     
@@ -121,24 +117,24 @@ def create_3d_analysis(current_gmv=None, current_roi=None):
         
         # 绘制当前点
         ax.scatter([current_roi], [current_gmv], [current_commission], 
-                  color='red', s=100, label='当前位置')
+                  color='red', s=100, label='Current Position')
         
         # 绘制优化路径
-        ax.plot(path_roi, path_gmv, path_z, 'gray', linewidth=1, linestyle='--', label='优化路径')
+        ax.plot(path_roi, path_gmv, path_z, 'gray', linewidth=1, linestyle='--', label='Optimization Path')
         
         # 创建自定义图例的元素
         from matplotlib.lines import Line2D
         custom_lines = [
             Line2D([0], [0], color='black', marker='^', linestyle='none', 
-                  markersize=10, label='优先提升GMV'),
+                  markersize=10, label='GMV Priority'),
             Line2D([0], [0], color='blue', marker='^', linestyle='none', 
-                  markersize=10, label='优先提升ROI'),
+                  markersize=10, label='ROI Priority'),
             Line2D([0], [0], color='red', marker='o', linestyle='none', 
-                  markersize=10, label='当前位置'),
+                  markersize=10, label='Current Position'),
             Line2D([0], [0], color='green', marker='o', linestyle='none', 
-                  markersize=10, label='最优位置'),
+                  markersize=10, label='Optimal Position'),
             Line2D([0], [0], color='gray', linestyle='--', 
-                  label='优化路径')
+                  label='Optimization Path')
         ]
         
         # 绘制每个阶段的优化方向
@@ -151,17 +147,17 @@ def create_3d_analysis(current_gmv=None, current_roi=None):
         ax.scatter([ROI[max_commission_idx]], [GMV[max_commission_idx]], [Z[max_commission_idx]], 
                   color='green', s=100)
     
-    ax.set_xlabel('ROI值')
-    ax.set_ylabel('GMV (万美元)')
-    ax.set_zlabel('提成金额 (万人民币)')
-    ax.set_title('提成金额与ROI、GMV的关系(3D视图)')
+    ax.set_xlabel('ROI Value')
+    ax.set_ylabel('GMV (10k USD)')
+    ax.set_zlabel('Commission Amount (10k CNY)')
+    ax.set_title('Commission Amount vs ROI & GMV (3D View)')
     
     # 添加自定义图例
     if current_gmv is not None:
         ax.legend(handles=custom_lines, loc='upper left', bbox_to_anchor=(1.15, 1))
     
     # 添加颜色条
-    fig.colorbar(surf, ax=ax, label='提成金额 (万人民币)')
+    fig.colorbar(surf, ax=ax, label='Commission Amount (10k CNY)')
     
     plt.tight_layout()
     plt.show()
@@ -172,29 +168,29 @@ def create_3d_analysis(current_gmv=None, current_roi=None):
     optimal_roi = ROI[max_commission_idx]
     max_commission = Z[max_commission_idx]
     
-    print(f"\n最优参数分析:")
-    print(f"最高提成金额: {max_commission:.2f}万人民币")
-    print(f"对应GMV: {optimal_gmv:.2f}万美元")
-    print(f"对应ROI: {optimal_roi:.2f}")
+    print(f"\nOptimal Parameters Analysis:")
+    print(f"Maximum Commission: {max_commission:.2f} 10k CNY")
+    print(f"Corresponding GMV: {optimal_gmv:.2f} 10k USD")
+    print(f"Corresponding ROI: {optimal_roi:.2f}")
     
     if current_gmv is not None and current_roi is not None:
         _, current_commission, current_bonus = calculate_commission(current_gmv, current_roi)
         current_total = current_commission + current_bonus
-        print(f"\n当前状态:")
-        print(f"当前提成金额: {current_commission:.2f}万人民币")
-        print(f"当前任务奖励: {current_bonus:.2f}万人民币")
-        print(f"当前总收入: {current_total:.2f}万人民币")
+        print(f"\nCurrent Status:")
+        print(f"Current Commission: {current_commission:.2f} 10k CNY")
+        print(f"Current Task Bonus: {current_bonus:.2f} 10k CNY")
+        print(f"Current Total Income: {current_total:.2f} 10k CNY")
 
 def analyze_commission(current_gmv=None, current_roi=None):
     """
-    分析并返回可视化结果和数据分析
+    Analyze and return visualization results and data analysis
     
-    参数:
-        current_gmv: float, 当前GMV值（万美元）
-        current_roi: float, 当前ROI值
+    Parameters:
+        current_gmv: float, current GMV value (10k USD)
+        current_roi: float, current ROI value
         
-    返回:
-        dict: 包含图表对象和分析结果的字典
+    Returns:
+        dict: Dictionary containing chart objects and analysis results
     """
     # 创建3D分析图
     fig = create_3d_analysis(current_gmv, current_roi)
@@ -214,16 +210,16 @@ def analyze_commission(current_gmv=None, current_roi=None):
         'figure': fig,
         'results': results,
         'instructions': """
-### 图例说明：
-- 红色点：当前位置
-- 绿色点：最优位置
-- 灰色虚线：优化路径
+### Legend Description:
+- Red dot: Current Position
+- Green dot: Optimal Position
+- Gray dashed line: Optimization Path
 
-### 操作说明：
-- 鼠标拖动可旋转视图
-- 滚轮可缩放视图
-- 双击可重置视图
-- 右上角工具栏提供更多视图操作选项
+### Operation Instructions:
+- Drag mouse to rotate view
+- Scroll wheel to zoom
+- Double click to reset view
+- More view options in top-right toolbar
         """
     }
 

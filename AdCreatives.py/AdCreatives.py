@@ -1,6 +1,5 @@
 from PIL import Image, ImageDraw, ImageFont
 import os
-import cv2
 import numpy as np
 
 script_dir = os.path.dirname(os.path.abspath(__file__))

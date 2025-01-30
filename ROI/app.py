@@ -20,8 +20,8 @@ def main():
         current_gmv = st.number_input(
             'GMV (万美元)',
             min_value=0.5,
-            max_value=60.0,
-            value=20.0,
+            max_value=500.0,
+            value=10.0,
             step=0.5,
             help='请输入当前GMV值（单位：万美元）'
         )

@@ -2,6 +2,8 @@ from PIL import Image
 import cv2
 import numpy as np
 import os
+from rembg import remove
+from io import BytesIO
 
 def webp_to_jpg(webp_file):
     """
@@ -154,3 +156,30 @@ def mp4_to_gif(video_file, max_size_mb=8, start_time=0, end_time=None, target_wi
         if os.path.exists(temp_output):
             os.remove(temp_output)
         raise Exception(f"转换过程中出错: {str(e)}")
+
+def remove_background_batch(image_files):
+    """
+    批量去除图片背景
+    
+    Args:
+        image_files: 图片文件对象列表
+    Returns:
+        处理后的图片对象列表
+    """
+    try:
+        processed_images = []
+        
+        for image_file in image_files:
+            # 读取图片
+            input_image = Image.open(image_file)
+            
+            # 去除背景
+            output_image = remove(input_image)
+            
+            # 将处理后的图片添加到列表中
+            processed_images.append(output_image)
+            
+        return processed_images
+        
+    except Exception as e:
+        raise Exception(f"批量去除背景过程中出错: {str(e)}")
